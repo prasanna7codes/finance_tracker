@@ -1,5 +1,9 @@
 "use client";
 import { currencyFormatter } from "@/lib/utils";
+import Nav from "@/components/Navigation";
+import Modal from "@/components/Modal";
+import { useState } from "react";
+
 
 import ExpenseCategoryItem from "@/components/ExpenseCategoryItem";
 
@@ -42,16 +46,28 @@ const DUMMY_DATA = [
 ];
 
 export default function Home() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  
 
   return (
-    <main className="container max-w-2xl px-6 mx-auto">
+    <>
+    
+    <Modal show={modalIsOpen} onClose={setModalIsOpen}>
+        <h3>Hello World</h3>
+      </Modal>
+ 
+
+
+    <main className="container max-w-lg px-6 mx-auto">
       <section className="py-3">
         <small className="text-gray-400 text-md">My Balance</small>
-        <h2 className="text-4xl font-bold">{currencyFormatter(99120000)}</h2>
+        <h2 className="text-4xl font-bold">{currencyFormatter(9920000)}</h2>
       </section>
 
       <section className="flex items-center gap-2 py-3">
-        <button className="btn btn-primary">+ Expenses</button>
+        <button  onClick={() => {
+              setModalIsOpen(true);
+            }} className="btn btn-primary">+ Expenses</button>
         <button className="btn btn-primary-outline">+ Income</button>
       </section>
 
@@ -74,7 +90,7 @@ export default function Home() {
       {/* Chart Section */}
       <section className="py-6">
         <h3 className="text-2xl">Stats</h3>
-        <div className="w-1/2 mx-auto">
+        <div className="w-1/2 mx-auto ">
           <Doughnut
             data={{
               labels: DUMMY_DATA.map((expense) => expense.title),
@@ -92,5 +108,7 @@ export default function Home() {
         </div>
       </section>
     </main>
+    </>
+    
   );
 }
