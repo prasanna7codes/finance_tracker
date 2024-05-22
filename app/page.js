@@ -1,8 +1,12 @@
 "use client";
 import { currencyFormatter } from "@/lib/utils";
 import Nav from "@/components/Navigation";
-import Modal from "@/components/Modal";
+import AddIncomeModal from "@/components/modals/AddIncomeModal";
 import { useState } from "react";
+
+
+
+
 
 
 import ExpenseCategoryItem from "@/components/ExpenseCategoryItem";
@@ -46,15 +50,20 @@ const DUMMY_DATA = [
 ];
 
 export default function Home() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  
+
+  const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
+  
   
 
   return (
     <>
     
-    <Modal show={modalIsOpen} onClose={setModalIsOpen}>
-        <h3>Hello World</h3>
-      </Modal>
+    {/* Add Income Modal */}
+    <AddIncomeModal
+        show={showAddIncomeModal}
+        onClose={setShowAddIncomeModal}
+      />
  
 
 
@@ -65,11 +74,17 @@ export default function Home() {
       </section>
 
       <section className="flex items-center gap-2 py-3">
-        <button  onClick={() => {
-              setModalIsOpen(true);
-            }} className="btn btn-primary">+ Expenses</button>
-        <button className="btn btn-primary-outline">+ Income</button>
-      </section>
+          <button onClick={() => {}} className="btn btn-primary">
+            + Expenses
+          </button>
+
+          <button onClick={() => {
+             setShowAddIncomeModal(true);
+            }}  className="btn btn-primary-outline"
+          >  + Income
+          </button>
+          
+        </section>
 
       {/* Expenses */}
       <section className="py-6">
@@ -78,6 +93,7 @@ export default function Home() {
           {DUMMY_DATA.map((expense) => {
             return (
               <ExpenseCategoryItem
+                key={expense.id}
                 color={expense.color}
                 title={expense.title}
                 total={expense.total}
