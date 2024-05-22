@@ -6,7 +6,9 @@
   body {
     @apply relative  text-white bg-slate-900 relative;
   }
-
+  html {
+    scroll-behavior: smooth;
+  }
   button {
     @apply transition-all duration-100 hover:scale-110;
   }

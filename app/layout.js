@@ -3,6 +3,8 @@
 
 import { Inter } from 'next/font/google'
 import AuthContextProvider from "@/lib/store/auth-context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import './globals.css'
 import Nav from "@/components/Navigation";
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
       <AuthContextProvider>
           <FinanceContextProvider>
+          <ToastContainer />
             <Nav />
             {children}
           </FinanceContextProvider>
