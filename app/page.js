@@ -2,7 +2,9 @@
 import { currencyFormatter } from "@/lib/utils";
 import Nav from "@/components/Navigation";
 import AddIncomeModal from "@/components/modals/AddIncomeModal";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { financeContext } from "@/lib/store/finance-context";
+import AddExpensesModal from "@/components/modals/AddExpensesModal";
 
 
 
@@ -16,44 +18,29 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DUMMY_DATA = [
-  {
-    id: 1,
-    title: "Entertainment",
-    color: "#000",
-    total: 500,
-  },
-  {
-    id: 2,
-    title: "Gass",
-    color: "#009",
-    total: 200,
-  },
-  {
-    id: 3,
-    title: "Fuel",
-    color: "#000",
-    total: 1200,
-  },
-  {
-    id: 4,
-    title: "Movies",
-    color: "#000",
-    total: 800,
-  },
-  {
-    id: 5,
-    title: "Holiday",
-    color: "#000",
-    total: 2000,
-  },
-];
+
 
 export default function Home() {
   
 
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
-  
+  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+
+  const [balance, setBalance] = useState(0);
+
+  const { expenses, income } = useContext(financeContext);
+
+  useEffect(() => {
+    const newBalance =
+      income.reduce((total, i) => {
+        return total + i.amount;
+      }, 0) -
+      expenses.reduce((total, e) => {
+        return total + e.total;
+      }, 0);
+
+    setBalance(newBalance);
+  }, [expenses, income]);
   
 
   return (
@@ -64,17 +51,29 @@ export default function Home() {
         show={showAddIncomeModal}
         onClose={setShowAddIncomeModal}
       />
+
+
+       {/* Add Expenses Modal */}
+       <AddExpensesModal
+        show={showAddExpenseModal}
+        onClose={setShowAddExpenseModal}
+      />
  
 
 
     <main className="container max-w-lg px-6 mx-auto">
       <section className="py-3">
         <small className="text-gray-400 text-md">My Balance</small>
-        <h2 className="text-4xl font-bold">{currencyFormatter(9920000)}</h2>
+        <h2 className="text-4xl font-bold">{currencyFormatter(balance)}</h2>
       </section>
 
       <section className="flex items-center gap-2 py-3">
-          <button onClick={() => {}} className="btn btn-primary">
+      <button
+            onClick={() => {
+              setShowAddExpenseModal(true);
+            }}
+            className="btn btn-primary"
+          >
             + Expenses
           </button>
 
@@ -90,15 +89,8 @@ export default function Home() {
       <section className="py-6">
         <h3 className="text-2xl">My Expenses</h3>
         <div className="flex flex-col gap-4 mt-6">
-          {DUMMY_DATA.map((expense) => {
-            return (
-              <ExpenseCategoryItem
-                key={expense.id}
-                color={expense.color}
-                title={expense.title}
-                total={expense.total}
-              />
-            );
+          {expenses.map((expense) => {
+            return <ExpenseCategoryItem key={expense.id} expense={expense} />;
           })}
         </div>
       </section>
@@ -109,12 +101,12 @@ export default function Home() {
         <div className="w-1/2 mx-auto ">
           <Doughnut
             data={{
-              labels: DUMMY_DATA.map((expense) => expense.title),
+              labels: expenses.map((expense) => expense.title),
               datasets: [
                 {
                   label: "Expenses",
-                  data: DUMMY_DATA.map((expense) => expense.total),
-                  backgroundColor: DUMMY_DATA.map((expense) => expense.color),
+                  data: expenses.map((expense) => expense.total),
+                  backgroundColor: expenses.map((expense) => expense.color),
                   borderColor: ["#18181b"],
                   borderWidth: 5,
                 },
