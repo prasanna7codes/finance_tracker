@@ -2,6 +2,7 @@
 
 
 import { Inter } from 'next/font/google'
+import AuthContextProvider from "@/lib/store/auth-context";
 
 import './globals.css'
 import Nav from "@/components/Navigation";
@@ -19,10 +20,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-      <FinanceContextProvider>
-          <Nav />
-          {children}
-        </FinanceContextProvider></body>
+      <AuthContextProvider>
+          <FinanceContextProvider>
+            <Nav />
+            {children}
+          </FinanceContextProvider>
+        </AuthContextProvider></body>
     </html>
   )
 }

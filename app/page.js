@@ -5,6 +5,8 @@ import AddIncomeModal from "@/components/modals/AddIncomeModal";
 import { useState, useContext, useEffect } from "react";
 import { financeContext } from "@/lib/store/finance-context";
 import AddExpensesModal from "@/components/modals/AddExpensesModal";
+import { authContext } from "@/lib/store/auth-context";
+import SignIn from "@/components/SignIn";
 
 
 
@@ -29,6 +31,7 @@ export default function Home() {
   const [balance, setBalance] = useState(0);
 
   const { expenses, income } = useContext(financeContext);
+  const { user } = useContext(authContext);
 
   useEffect(() => {
     const newBalance =
@@ -41,6 +44,10 @@ export default function Home() {
 
     setBalance(newBalance);
   }, [expenses, income]);
+
+  if (!user) {
+    return <SignIn />;
+  }
   
 
   return (
