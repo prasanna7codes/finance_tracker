@@ -1,3 +1,4 @@
+<img width="362" alt="vega" src="https://github.com/prasanna7codes/finance_tracker/assets/166421920/217bb301-99a4-4420-9f6f-e662bfb28599">
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
